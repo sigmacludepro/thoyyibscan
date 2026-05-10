@@ -807,11 +807,13 @@ html,body{margin:0;padding:0;background:#0A0806;font-family:'Noto Sans Thai',san
       <div class="card" style="margin-top:8px">
         <div class="chdr"><div class="cico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="ctit" id="t-cht">ถาม AI เรื่องส่วนผสม</div></div>
         <div class="chatmsgs" id="chatBox"><div class="cmsg ai" id="t-cw">สวัสดีครับ! ถามเรื่องส่วนผสม ฮาลาล หรือ E-numbers ได้เลย</div></div>
-        <div class="cqbtns">
-  <div class="exc" id="cq-e471" onclick="qChat(lang==='th'?'E471 คืออะไร?':'What is E471?')">E471?</div>
-  <div class="exc" id="cq-gel" onclick="qChat(lang==='th'?'เจลาตินฮาลาลไหม?':'Is gelatin Halal?')">เจลาตินฮาลาล?</div>
-  <div class="exc" id="cq-e102" onclick="qChat(lang==='th'?'E102 อันตรายไหม?':'Is E102 safe?')">E102?</div>
-  <div class="exc" id="cq-rspo" onclick="qChat(lang==='th'?'RSPO คืออะไร?':'What is RSPO?')">RSPO?</div>
+        <div class="cqbtns" id="cqBtns">
+  <div class="exc" onclick="qChatLang('E471 คืออะไร?','What is E471?')">E471?</div>
+  <div class="exc" onclick="qChatLang('เจลาตินฮาลาลไหม?','Is gelatin Halal?')" id="cq-gel">เจลาตินฮาลาล?</div>
+  <div class="exc" onclick="qChatLang('E102 อันตรายไหม?','Is E102 safe?')">E102?</div>
+  <div class="exc" onclick="qChatLang('RSPO คืออะไร?','What is RSPO?')">RSPO?</div>
+  <div class="exc" onclick="qChatLang('E120 ฮารอมไหม?','Is E120 Haram?')">E120?</div>
+  <div class="exc" onclick="qChatLang('แอลกอฮอล์ฮารอมไหม?','Is alcohol Haram?')">แอลกอฮอล์?</div>
 </div>
         <div class="ciw"><input type="text" class="cinp" id="chatIn" placeholder="พิมพ์คำถาม..." onkeydown="if(event.key==='Enter')doChat()"><button class="csend" onclick="doChat()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
       </div>
@@ -1230,6 +1232,7 @@ function toggleLang(){
     try{if(htmlKeys.indexOf(id)>=0||t[id].indexOf('<span')>=0)el.innerHTML=t[id];else el.textContent=t[id];}catch(err){}
   });
   var ci=document.getElementById('chatIn');if(ci)ci.placeholder=lang==='th'?'พิมพ์คำถาม...':'Type your question...';
+  var cw=document.getElementById('t-cw');if(cw)cw.textContent=lang==='th'?'สวัสดีครับ! ถามเรื่องส่วนผสม ฮาลาล หรือ E-numbers ได้เลย':'Hello! Ask me about ingredients, Halal status, or E-numbers.';
   var ca=document.getElementById('cmpA');if(ca)ca.placeholder=lang==='th'?'ส่วนผสม A...':'Product A ingredients...';
   var cb=document.getElementById('cmpB');if(cb)cb.placeholder=lang==='th'?'ส่วนผสม B...':'Product B ingredients...';
   var ing=document.getElementById('ingIn');if(ing)ing.placeholder=lang==='th'?'วางส่วนผสมจากฉลาก เช่น น้ำตาล, เจลาติน, E471, E120...':'Paste ingredients e.g. sugar, gelatin, E471, E120...';
@@ -1721,6 +1724,12 @@ function smartChatAnswer(msg){
 
 
 function qChat(m){document.getElementById('chatIn').value=m;doChat();}
+function qChatLang(thMsg,enMsg){
+  // ส่งข้อความตาม UI language ปัจจุบัน เพื่อให้ auto-detect ทำงานถูก
+  var msg=lang==='th'?thMsg:enMsg;
+  document.getElementById('chatIn').value=msg;
+  doChat();
+}
 function addMsg(txt,cls){var b=document.getElementById('chatBox'),el=document.createElement('div');el.className='cmsg '+cls;el.textContent=txt;b.appendChild(el);b.scrollTop=b.scrollHeight;return el;}
 
 // ===== REPORT =====
